@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useQuery } from '@tanstack/react-query'
 
+import landingImage from '../assets/Landingimage.png'
 import React from 'react'
 
 
@@ -10,15 +10,28 @@ export default function LandingPage() {
 
 
   return (
+    <>
     <div
+  
   className="d-flex justify-content-center align-items-center vh-100"
   style={{
-    color: 'blue', // Text color
-    backgroundColor: 'lightgray', // Background color
-    fontSize: '2rem', // Font size
+    backgroundImage: `url(${landingImage})`,
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      // height: "100vh", // Full height of the viewport
+      
   }}
 >
-  HAMADA <i className="fa-solid fa-user text-warning ps-2"></i>
+  <div className='flex-column d-flex justify-content-center align-items-center'>
+  <h1 className='text-white ' style={{ fontSize: "120px" }}>T R A V E L</h1>
+  <p className='text-white' style={{ fontSize: "40px" }}>Visit the most historic country in the world</p>
+  </div>
+
+
+  
 </div>
+    </>
+    
   )
 }

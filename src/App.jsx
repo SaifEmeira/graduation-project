@@ -2,6 +2,8 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LandingPage from './components/landingPage'
+import Layout from './components/Layout'
+
 
 
 
@@ -9,7 +11,8 @@ export default function App() {
 
 
   let routes = createBrowserRouter([{
-    path:'/',element:<LandingPage/>,
+    path:'/',element:<Layout/>,
+
   }])
   return (
     <RouterProvider router={routes}></RouterProvider>
