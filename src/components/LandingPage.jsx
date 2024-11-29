@@ -2,6 +2,7 @@
 
 import landingImage from '../assets/Landingimage.png'
 import React from 'react'
+import Section2LandingPage from './Section2LandingPage'
 
 
 export default function LandingPage() {
@@ -31,6 +32,7 @@ export default function LandingPage() {
 
   
 </div>
+<Section2LandingPage/>
     </>
     
   )
