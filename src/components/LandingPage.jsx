@@ -10,8 +10,15 @@ export default function LandingPage() {
 
 
   return (
-    <div className='flex flex-wrap justify-center'>
-   HAMADA
-    </div>
+    <div
+  className="d-flex justify-content-center align-items-center vh-100"
+  style={{
+    color: 'blue', // Text color
+    backgroundColor: 'lightgray', // Background color
+    fontSize: '2rem', // Font size
+  }}
+>
+  HAMADA <i className="fa-solid fa-user text-warning ps-2"></i>
+</div>
   )
 }
