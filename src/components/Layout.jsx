@@ -3,6 +3,9 @@ import Navbar from './Navbar'
 import { Outlet } from 'react-router-dom'
 import CustomNavbar from './Navbar'
 import LandingPage from './landingPage'
+import Register from './Register';
+import Login from './Login';
+
 
 
 
@@ -10,8 +13,10 @@ import LandingPage from './landingPage'
 export default function Layout() {
   return (
     <div>
-        <CustomNavbar/>
-        <LandingPage/>
+        {/* <CustomNavbar/>
+        <LandingPage/> */}
+        <Login/>
+        
        
     </div>
   )

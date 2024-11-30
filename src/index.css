@@ -342,3 +342,35 @@ button:focus-visible {
 
 
 /* OTP CSS */
+
+/* .verify-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+} */
+ /* General Input Style */
+input.form-control {
+  background-color: #1c1c1c; /* Dark background */
+  color: #ffffff; /* White text for user input */
+  border: 1px solid #555555; /* Gray border */
+  transition: border-color 0.2s ease; /* Smooth border transition */
+}
+
+/* Focused Input Style */
+input.form-control:focus {
+  background-color: #1c1c1c; /* Maintain dark background on focus */
+  color: #ffffff; /* Text color remains white */
+  outline: none; /* Remove the blue default outline */
+  box-shadow: none; /* Prevent shadow effects */
+  border: 1px solid #AD764A; /* Optional: Highlight border color on focus */
+}
+
+/* Placeholder Text */
+input.form-control::placeholder {
+  color: #8A8988; /* Gray placeholder text */
+  opacity: 1; /* Ensure placeholder visibility */
+}
+
+/* Placeholder on Focus */
+input.form-control:focus::placeholder {
+  color: #8A8988; /* Keep placeholder consistent on focus */
+}
