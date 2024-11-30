@@ -3,7 +3,7 @@ import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 // import LandingPage from './components/landingPage'
 
-import Layout from './components/Layout'
+import Layout from './Components/Layout'
 
 
 
