@@ -7,6 +7,9 @@ import Layout from './Components/Layout'
 import ForgetPassword from './Components/ForgetPassword'
 import VerifyOTP from './Components/VerifyOTP'
 import ResetPassword from './Components/ResetPassword'
+import LoginForm from './Components/Login'
+import Register from './Components/Register'
+import LandingPage from './Components/landingPage'
 
 
 
@@ -18,6 +21,10 @@ export default function App() {
   const routes = createBrowserRouter([
     {
       path: "/", // Default route
+      element: <Layout />,
+    },
+    {
+      path: "/forgetPassword", // Default route
       element: <ForgetPassword />,
     },
     {
@@ -27,6 +34,14 @@ export default function App() {
     {
       path: "/resetPassword", // OTP verification route
       element: <ResetPassword />,
+    },
+    {
+      path: "/login", // OTP verification route
+      element: <LoginForm />,
+    },
+    {
+      path: "/register", // OTP verification route
+      element: <Register />,
     },
   ]);
   return (

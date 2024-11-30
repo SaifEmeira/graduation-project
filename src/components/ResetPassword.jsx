@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import ahramat from "../assets/pexels-matteo-roman-1151921619-21316202.jpg"; // Replace with the correct image path
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
+    const navigate = useNavigate(); // Initialize the useNavigate hook
+
     const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState(""); // State to manage success message visibility
@@ -24,6 +27,7 @@ export default function ResetPassword() {
     }),
     onSubmit: (values) => {
       console.log("Form data:", values);
+      navigate("/login");
       setSuccessMessage("Password reset successfully!"); // Show success message on form submit
       setTimeout(() => {
         setSuccessMessage(""); // Hide success message after 5 seconds

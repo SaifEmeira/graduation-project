@@ -13,9 +13,9 @@ import Login from './Login';
 export default function Layout() {
   return (
     <div>
-        {/* <CustomNavbar/>
-        <LandingPage/> */}
-        <Login/>
+        <CustomNavbar/>
+        <LandingPage/>
+        
         
        
     </div>

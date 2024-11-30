@@ -6,6 +6,7 @@ import GizaLogin from "../assets/gizaLogin.jpg";
 
 // Import Font Awesome
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { Link } from "react-router-dom";
 
 export default function LoginForm() {
   // State for toggling visibility of the password field
@@ -130,12 +131,12 @@ export default function LoginForm() {
                         Remember Me
                       </label>
                     </div>
-                    <a
-                      href="#"
+                    <Link
+                      to="/forgetPassword"
                       className="text-white text-decoration-underline"
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
 
                   {/* Login Button */}
@@ -154,13 +155,13 @@ export default function LoginForm() {
             {/* Sign Up */}
             <p className="text-center text-white">
               Don't have an account?{" "}
-              <a
-                href="#"
+              <Link
+                to="/register"
                 className="text-decoration-underline"
                 style={{ color: "#AD764A" }}
               >
                 Sign Up
-              </a>
+              </Link>
             </p>
           </div>
         </div>

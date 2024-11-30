@@ -1,7 +1,9 @@
 import React from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 export default function CustomNavbar() {
+  const navigate = useNavigate(); 
   return (
     <Navbar expand="lg" fixed="top" style={{ background: 'transparent' }} className="text-white">
       <Container>
@@ -28,7 +30,12 @@ export default function CustomNavbar() {
             <Button style={{ backgroundColor: '#AD764A' }} className="me-2 border-0">
               Become a Guide
             </Button>
-            <Button variant="outline-light">Login</Button>
+            <Button
+              variant="outline-light"
+              onClick={() => navigate('/login')} // Navigate to /login when clicked
+            >
+              Login
+            </Button>
           </div>
         </Navbar.Collapse>
       </Container>
