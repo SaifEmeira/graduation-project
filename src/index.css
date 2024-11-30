@@ -66,3 +66,279 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+/* FORGET CSS */
+.recover-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.image-section {
+  flex: 1;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #353331;
+  color: white;
+}
+
+.recover-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.recover-description {
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #f3f3f3;
+}
+
+.recover-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+}
+
+.email-input {
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #797978;
+}
+.email-input::placeholder {
+  color: #f3f3f3;
+}
+
+.continue-button {
+  padding: 0.8rem;
+  background-color: #ad764a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.continue-button:hover {
+  background-color: #915c3a;
+}
+
+.back-to-login {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #ad764a;
+  text-decoration: none;
+}
+
+.back-to-login:hover {
+  text-decoration: underline;
+}
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+/* FORGET CSS */
+/* OTP CSS */
+.recover-container {
+  display: flex;
+  height: 100vh;
+}
+
+.image-section {
+  flex: 1;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #1d1d1d; /* Dark background */
+  color: #ffffff;
+}
+
+.recover-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.recover-description {
+  margin-bottom: 2rem;
+}
+
+.otp-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.otp-inputs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.otp-input {
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border: 1px solid #ad764a; /* Border color */
+  border-radius: 8px;
+  background-color: #353331;
+  color: #ffffff;
+}
+
+.otp-input:focus {
+  outline: 2px solid #ad764a;
+}
+
+.error {
+  border-color: red;
+}
+
+.verify-button {
+  background-color: #ad764a;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.resend-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.resend-link {
+  color: #ad764a;
+  cursor: pointer;
+  font-weight: bold;
+}
+.verify-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.continue-button:disabled {
+  background-color: #cccccc; /* Gray color for disabled state */
+  cursor: not-allowed; /* Prevent hover interactions */
+}
+/* ResetPassword CSS */
+.reset-password-container {
+  display: flex;
+  height: 100vh;
+}
+
+.image-section {
+  flex: 1;
+  background-color: #000;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.form-section {
+  flex: 1;
+  padding: 50px;
+  background-color: #353331;
+  color: #fff;
+}
+
+.reset-title {
+  margin-bottom: 10px;
+}
+
+.reset-description {
+  margin-bottom: 30px;
+  color: #f3f3f3;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  border: 1px solid #f3f3f3;
+  border-radius: 5px;
+  background-color: #353331;
+  color: #fff;
+}
+
+.password-input::placeholder {
+  color: #f3f3f3;
+}
+
+.input-wrapper i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #f3f3f3;
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+}
+
+.reset-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ad764a;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.reset-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+/* ResetPASSWORD CSS */
+
+
+
+
+
+
+
+
+
+/* OTP CSS */

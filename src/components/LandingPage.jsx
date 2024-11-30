@@ -5,6 +5,7 @@ import React from 'react'
 import Section2LandingPage from './Section2LandingPage'
 
 
+
 export default function LandingPage() {
 
   
