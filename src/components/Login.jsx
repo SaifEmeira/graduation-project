@@ -6,11 +6,13 @@ import GizaLogin from "../assets/gizaLogin.jpg";
 
 // Import Font Awesome
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LoginForm() {
   // State for toggling visibility of the password field
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();  // Used for navigation after successful login
 
   // Validation Schema using Yup
   const validationSchema = Yup.object({
@@ -30,9 +32,28 @@ export default function LoginForm() {
   };
 
   // Form submission handler
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     console.log("Form submitted:", values);
-    alert("Form submitted successfully!");
+
+    try {
+      // API Call (GET request with query parameters)
+      const response = await axios.get(
+        `http://tourguide.tryasp.net/auth/Login?Email=${encodeURIComponent(values.email)}&Password=${encodeURIComponent(values.password)}`
+      );
+
+      console.log("API Response:", response.data);
+
+      // Handle successful login (e.g., redirect to a new page)
+      if (response.data.success) {
+        alert("Login successful!");
+        navigate("/dashboard"); // Redirect to the dashboard after successful login
+      } else {
+        alert("Invalid credentials. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Login failed. Please try again.");
+    }
   };
 
   return (

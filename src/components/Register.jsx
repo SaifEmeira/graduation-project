@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"; // Import Axios
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -6,41 +7,83 @@ import GizaLogin from "../assets/gizaLogin.jpg";
 
 // Import Font Awesome
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import VerifyOTP from "./VerifyOTP";
 
 export default function Register() {
   // State for toggling visibility of password fields
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
+  const [isRegistered, setIsRegistered] = useState(false);
 
   // Formik logic with Yup validation schema
   const formik = useFormik({
     initialValues: {
-      fullName: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
       terms: false,
     },
     validationSchema: Yup.object({
-      fullName: Yup.string()
-        .min(3, "Name must be at least 3 characters")
-        .required("Full Name is required"),
+      firstName: Yup.string()
+        .min(2, "First Name must be at least 2 characters")
+        .required("First Name is required"),
+      lastName: Yup.string()
+        .min(2, "Last Name must be at least 2 characters")
+        .required("Last Name is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
       password: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("Password is required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "Passwords must match")
-        .required("Confirm Password is required"),
-      terms: Yup.bool().oneOf([true], "You must accept the terms of service"),
+      
     }),
-    onSubmit: (values) => {
-      alert("Form submitted successfully! 🚀");
-      console.log(values);
+    onSubmit: async (values) => {
+      console.log("Form submitted with values:", values);
+      try {
+        // API Call
+        const response = await axios.post("http://tourguide.tryasp.net/auth/Register", {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+          phoneNumber: "string",
+  profilePictureUrl: "string"
+        });
+        console.log("hamada");
+        
+        console.log("API Response:", response.data);
+
+        // Display success message
+        alert("Registration successful! 🚀");
+
+        
+      } catch (error) {
+        console.error("Error during registration:", error.response?.data || error.message);
+        
+       
+        localStorage.setItem("userEmail", values.email);
+        const storedEmail = localStorage.getItem("userEmail");
+        console.log("Stored Email from localStorage:", storedEmail);
+
+        
+        
+        // Set the registered state to true
+        setIsRegistered(true)
+        // Display error message
+        alert("Registration failed. Please try again.");
+      }
     },
   });
+
+  if (isRegistered) {
+    return <VerifyOTP />;
+  }
 
   return (
     <div className="container-fluid vh-100">
@@ -57,7 +100,12 @@ export default function Register() {
 
         {/* Right Side - Registration Form */}
         <div className="col-md-6 d-flex align-items-center justify-content-center bg-dark text-light">
-          <form className="w-75" onSubmit={formik.handleSubmit}>
+          <form className="w-75" onSubmit={(e) => {
+  e.preventDefault(); // Prevent default behavior
+  console.log("Before submit: Formik errors:", formik.errors); // Check for errors
+  console.log("Before submit: Formik values:", formik.values); // Check current values
+  formik.handleSubmit(e);
+}}>
             <h1 className="text-center mb-3 fw-bold">GET STARTED</h1>
             <p className="text-center mb-4" style={{ color: "#8A8988", fontSize: "20px" }}>
               Sign up now and unlock exclusive access!
@@ -73,25 +121,47 @@ export default function Register() {
 
             <div className="text-center text-muted my-3">OR</div>
 
-            {/* Full Name */}
+            {/* First Name */}
             <div className="mb-3">
-              <label htmlFor="fullName" className="form-label">
-                Full Name
+              <label htmlFor="firstName" className="form-label">
+                First Name
               </label>
               <input
                 type="text"
-                id="fullName"
-                name="fullName"
+                id="firstName"
+                name="firstName"
                 className={`form-control bg-dark text-light border-secondary ${
-                  formik.touched.fullName && formik.errors.fullName ? "is-invalid" : ""
+                  formik.touched.firstName && formik.errors.firstName ? "is-invalid" : ""
                 }`}
-                placeholder="Enter your name"
+                placeholder="Enter your first name"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.fullName}
+                value={formik.values.firstName}
               />
-              {formik.touched.fullName && formik.errors.fullName && (
-                <div className="invalid-feedback">{formik.errors.fullName}</div>
+              {formik.touched.firstName && formik.errors.firstName && (
+                <div className="invalid-feedback">{formik.errors.firstName}</div>
+              )}
+            </div>
+
+            {/* Last Name */}
+            <div className="mb-3">
+              <label htmlFor="lastName" className="form-label">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                className={`form-control bg-dark text-light border-secondary ${
+                  formik.touched.lastName && formik.errors.lastName ? "is-invalid" : ""
+                }`}
+                placeholder="Enter your last name"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.lastName}
+              />
+              {formik.touched.lastName && formik.errors.lastName && (
+                <div className="invalid-feedback">{formik.errors.lastName}</div>
               )}
             </div>
 
@@ -117,7 +187,7 @@ export default function Register() {
               )}
             </div>
 
-            {/* Create Password */}
+            {/* Password */}
             <div className="mb-3">
               <label htmlFor="password" className="form-label">
                 Create Password
@@ -148,61 +218,7 @@ export default function Register() {
               )}
             </div>
 
-            {/* Confirm Password */}
-            <div className="mb-3">
-              <label htmlFor="confirmPassword" className="form-label">
-                Confirm Password
-              </label>
-              <div className="input-group">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  className={`form-control bg-dark text-light border-secondary ${
-                    formik.touched.confirmPassword && formik.errors.confirmPassword
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  placeholder="Re-enter your password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.confirmPassword}
-                />
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary bg-dark text-light border-secondary"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  <i className={`fas ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
-                </button>
-              </div>
-              {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                <div className="invalid-feedback">{formik.errors.confirmPassword}</div>
-              )}
-            </div>
-
-            {/* Terms and Conditions */}
-            <div className="form-check mb-3">
-              <input
-                type="checkbox"
-                id="terms"
-                name="terms"
-                className={`form-check-input ${
-                  formik.touched.terms && formik.errors.terms ? "is-invalid" : ""
-                }`}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                checked={formik.values.terms}
-              />
-              <label htmlFor="terms" className="form-check-label">
-                I agree to the <a href="#" style={{ color: "#AD764A" }}>terms of service</a>
-              </label>
-              {formik.touched.terms && formik.errors.terms && (
-                <div className="invalid-feedback">{formik.errors.terms}</div>
-              )}
-            </div>
-
-            {/* Sign Up Button */}
+            {/* Submit Button */}
             <button
               type="submit"
               className="btn btn-warning w-100 mb-3 border-0"
@@ -210,14 +226,6 @@ export default function Register() {
             >
               Sign Up
             </button>
-
-            {/* Already have an account? */}
-            <p className="text-center text-white">
-              Already have an account?{" "}
-              <a href="#" className="text-decoration-underline" style={{ color: "#AD764A" }}>
-                Login
-              </a>
-            </p>
           </form>
         </div>
       </div>

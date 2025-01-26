@@ -1,29 +1,56 @@
-import React from 'react'
-import ahramat from '../assets/pexels-matteo-roman-1151921619-21316202.jpg'
+import React from 'react';
+import ahramat from '../assets/pexels-matteo-roman-1151921619-21316202.jpg';
 import { Link } from 'react-router-dom';
-import { useFormik } from "formik";
-import * as Yup from "yup"; // For validation schema
-import { useNavigate } from "react-router-dom";
-export default function ForgetPassword() {
-    const navigate = useNavigate(); // Initialize the useNavigate hook
+import { useFormik } from 'formik';
+import * as Yup from 'yup'; // For validation schema
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Axios for API calls
 
-    // Formik setup
-    const formik = useFormik({
-      initialValues: {
-        email: "",
-      },
-      validationSchema: Yup.object({
-        email: Yup.string()
-          .email("Invalid email address") // Validate email format
-          .required("Email is required"), // Validate presence of email
-      }),
-      onSubmit: (values) => {
-        console.log("Form data:", values);
-  
-        // Navigate to the OTP page after successful submission
-        navigate("/Otp");
-      },
-    });
+export default function ForgetPassword() {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
+  // Formik setup
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email('Invalid email address') // Validate email format
+        .required('Email is required'), // Validate presence of email
+    }),
+    onSubmit: async (values) => {
+      console.log('Form data:', values);
+
+      try {
+        // Call the API with Axios
+        const response = await axios.post('http://tourguide.tryasp.net/auth/ForgotPassword', {
+          email: values.email,
+        });
+
+        // Check if the response is successful
+        if (response.status === 200) {
+          console.log('API Response:', response.data);
+
+          // Store the email in local storage
+          localStorage.setItem('userEmail', values.email);
+
+          // Navigate to the Reset Password page
+          navigate('/ResetPassword');
+        } else {
+          console.error('Unexpected API response:', response);
+          alert('An error occurred. Please try again later.');
+          navigate('/ResetPassword');
+        }
+      } catch (error) {
+        console.error('Error calling the API:', error);
+        alert('Failed to send email. Please try again.');
+        navigate('/ResetPassword');
+
+      }
+    },
+  });
+
   return (
     <div className="recover-container">
       {/* Left Section */}
@@ -37,7 +64,9 @@ export default function ForgetPassword() {
 
       {/* Right Section */}
       <div className="form-section">
-        <h2 className="recover-title fs-1" style={{ fontFamily: 'Bebas Neue' }}>RECOVER ACCOUNT</h2>
+        <h2 className="recover-title fs-1" style={{ fontFamily: 'Bebas Neue' }}>
+          RECOVER ACCOUNT
+        </h2>
         <p className="recover-description">
           Please enter your email below. We’ll send you a link to reset your password.
         </p>
@@ -55,14 +84,16 @@ export default function ForgetPassword() {
             <div className="error-message">{formik.errors.email}</div>
           ) : null}
           <button
-    type="submit"
-    className="continue-button"
-    disabled={!(formik.isValid && formik.dirty)}
-  >
-    Continue
-  </button>
+            type="submit"
+            className="continue-button"
+            disabled={!(formik.isValid && formik.dirty)}
+          >
+            Continue
+          </button>
         </form>
-        <Link to="/login" className="back-to-login"> <i className="fa-solid fa-arrow-left pe-1"></i>Back to Login</Link>
+        <Link to="/login" className="back-to-login">
+          <i className="fa-solid fa-arrow-left pe-1"></i>Back to Login
+        </Link>
       </div>
     </div>
   );

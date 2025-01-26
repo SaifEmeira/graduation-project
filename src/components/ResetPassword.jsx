@@ -3,35 +3,83 @@ import ahramat from "../assets/pexels-matteo-roman-1151921619-21316202.jpg"; // 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function ResetPassword() {
-    const navigate = useNavigate(); // Initialize the useNavigate hook
+  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-    const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(""); // State to manage success message visibility
-  
+  // Retrieve email from local storage
+  const Email = localStorage.getItem("userEmail");
+
+
+  const handleInputChange = (index, event) => {
+    const value = event.target.value;
+    const otpValues = [...formik.values.otp];
+
+    if (event.key === "Backspace") {
+      otpValues[index] = ""; // Clear current value
+      formik.setFieldValue("otp", otpValues);
+      if (index > 0) {
+        document.getElementById(`otp-input-${index - 1}`).focus();
+      }
+    } else if (value.match(/^[0-9]$/)) {
+      otpValues[index] = value; // Add the digit
+      formik.setFieldValue("otp", otpValues);
+      if (index < 5) {
+        document.getElementById(`otp-input-${index + 1}`).focus();
+      }
+    }
+  };
   // Formik setup
   const formik = useFormik({
     initialValues: {
+      otp: ["", "", "", "", "", ""],
       newPassword: "",
-      confirmPassword: "",
     },
     validationSchema: Yup.object({
+      otp: Yup.array()
+              .of(
+                Yup.string()
+                  .length(1, "Must be a single digit")
+                  .matches(/^[0-9]$/, "Must be a number")
+              )
+              .required("OTP is required"),
       newPassword: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("New Password is required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
-        .required("Confirm Password is required"),
     }),
-    onSubmit: (values) => {
-      console.log("Form data:", values);
-      navigate("/login");
-      setSuccessMessage("Password reset successfully!"); // Show success message on form submit
-      setTimeout(() => {
-        setSuccessMessage(""); // Hide success message after 5 seconds
-      }, 5000);
+    onSubmit: async (values) => {
+      try {
+        console.log(Email);
+        console.log(values.otp);
+        
+        // Call the API with Axios
+        const response = await axios.get("http://tourguide.tryasp.net/auth/ResetPassword", {
+          params: {
+            Email,
+            Otp: values.otp,
+            NewPassword: values.newPassword,
+          },
+        });
+
+        // Handle successful response
+        if (response.status === 200) {
+          console.log("API Response:", response.data);
+          setSuccessMessage("Password reset successfully!");
+          setTimeout(() => {
+            setSuccessMessage("");
+            navigate("/login");
+          }, 3000); // Redirect after showing the success message
+        } else {
+          console.error("Unexpected API response:", response);
+          alert("An error occurred. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error calling the API:", error);
+        alert("Failed to reset password. Please check your OTP and try again.");
+      }
     },
   });
 
@@ -40,7 +88,7 @@ export default function ResetPassword() {
       {/* Left Section */}
       <div className="image-section">
         <img
-          src={ahramat} // Replace with your actual image path
+          src={ahramat}
           alt="Pyramids"
           className="background-image"
         />
@@ -52,14 +100,14 @@ export default function ResetPassword() {
           RESET YOUR PASSWORD
         </h2>
         <p className="reset-description">
-          Enter your New Password to access your account
+          Enter the OTP sent to your email and your new password to reset your account.
         </p>
 
         {/* Success Message */}
         {successMessage && (
           <div
             style={{
-              backgroundColor: "#4CAF50", // Green background for success
+              backgroundColor: "#4CAF50",
               color: "white",
               padding: "10px",
               borderRadius: "5px",
@@ -72,6 +120,30 @@ export default function ResetPassword() {
         )}
 
         <form className="reset-form" onSubmit={formik.handleSubmit}>
+          {/* OTP Field */}
+          <div className="otp-inputs">
+            {formik.values.otp.map((_, index) => (
+              <input
+                key={index}
+                id={`otp-input-${index}`}
+                type="text"
+                maxLength="1"
+                value={formik.values.otp[index]}
+                onChange={(e) => handleInputChange(index, e)}
+                onKeyDown={(e) => handleInputChange(index, e)}
+                onBlur={formik.handleBlur}
+                className={`otp-input ${
+                  formik.touched.otp?.[index] && formik.errors.otp?.[index]
+                    ? "error"
+                    : ""
+                }`}
+              />
+            ))}
+          </div>
+          {formik.errors.otp && formik.touched.otp && (
+            <div className="error-message">Please enter a valid OTP.</div>
+          )}
+
           {/* New Password Field */}
           <div className="input-wrapper">
             <input
@@ -86,36 +158,13 @@ export default function ResetPassword() {
             <i
               className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
               onClick={(e) => {
-                e.preventDefault(); // Prevent default action
-                setShowPassword(!showPassword); // Toggle password visibility
+                e.preventDefault();
+                setShowPassword(!showPassword);
               }}
             />
           </div>
           {formik.touched.newPassword && formik.errors.newPassword ? (
             <div className="error-message">{formik.errors.newPassword}</div>
-          ) : null}
-
-          {/* Confirm Password Field */}
-          <div className="input-wrapper">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              className="password-input"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <i
-              className={`fa ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}
-              onClick={(e) => {
-                e.preventDefault(); // Prevent default action
-                setShowConfirmPassword(!showConfirmPassword); // Toggle password visibility
-              }}
-            />
-          </div>
-          {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-            <div className="error-message">{formik.errors.confirmPassword}</div>
           ) : null}
 
           {/* Submit Button */}
