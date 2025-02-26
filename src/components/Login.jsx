@@ -8,6 +8,7 @@ import GizaLogin from "../assets/gizaLogin.jpg";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import LandingPage from './LandingPage';
 
 export default function LoginForm() {
   // State for toggling visibility of the password field
@@ -41,18 +42,20 @@ export default function LoginForm() {
         `http://tourguide.tryasp.net/auth/Login?Email=${encodeURIComponent(values.email)}&Password=${encodeURIComponent(values.password)}`
       );
 
-      console.log("API Response:", response.data);
+      console.log("API Response:", response);
+
+      localStorage.setItem("userToken", response.data.token);
 
       // Handle successful login (e.g., redirect to a new page)
-      if (response.data.success) {
+      if (response.status===200) {
         alert("Login successful!");
-        navigate("/dashboard"); // Redirect to the dashboard after successful login
+        navigate("/LandingPage"); // Redirect to the dashboard after successful login
       } else {
         alert("Invalid credentials. Please try again.");
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("Login failed. Please try again.");
+      console.error("Error during login:", error.response.data[0].description);
+      alert(error.response.data[0].description);
     }
   };
 

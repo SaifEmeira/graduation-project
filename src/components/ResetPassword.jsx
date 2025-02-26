@@ -54,18 +54,23 @@ export default function ResetPassword() {
       try {
         console.log(Email);
         console.log(values.otp);
+        // Convert OTP array to a single string
+    const otpString = values.otp.join("");
+    console.log("Formatted OTP:", otpString);
         
         // Call the API with Axios
         const response = await axios.get("http://tourguide.tryasp.net/auth/ResetPassword", {
           params: {
             Email,
-            Otp: values.otp,
+            Otp: otpString,
             NewPassword: values.newPassword,
           },
         });
 
         // Handle successful response
         if (response.status === 200) {
+        localStorage.removeItem("token");
+
           console.log("API Response:", response.data);
           setSuccessMessage("Password reset successfully!");
           setTimeout(() => {

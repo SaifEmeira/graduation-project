@@ -25,8 +25,8 @@ export default function Register() {
       lastName: "",
       email: "",
       password: "",
-      confirmPassword: "",
-      terms: false,
+      phoneNumber: "", // Added phoneNumber
+      profilePictureUrl: "", // Added profilePictureUrl
     },
     validationSchema: Yup.object({
       firstName: Yup.string()
@@ -41,7 +41,6 @@ export default function Register() {
       password: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("Password is required"),
-      
     }),
     onSubmit: async (values) => {
       console.log("Form submitted with values:", values);
@@ -52,35 +51,27 @@ export default function Register() {
           lastName: values.lastName,
           email: values.email,
           password: values.password,
-          phoneNumber: "string",
-  profilePictureUrl: "string"
+          phoneNumber: values.phoneNumber, // Now submitted from form
+          profilePictureUrl: values.profilePictureUrl, // Now submitted from form
         });
-        console.log("hamada");
-        
+        localStorage.removeItem("token");
+        localStorage.setItem("userEmail", values.email)
         console.log("API Response:", response.data);
-
-        // Display success message
         alert("Registration successful! 🚀");
+        setIsRegistered(true);
 
-        
       } catch (error) {
         console.error("Error during registration:", error.response?.data || error.message);
         
-       
-        localStorage.setItem("userEmail", values.email);
-        const storedEmail = localStorage.getItem("userEmail");
-        console.log("Stored Email from localStorage:", storedEmail);
-
-        
-        
-        // Set the registered state to true
-        setIsRegistered(true)
-        // Display error message
-        alert("Registration failed. Please try again.");
+        // Store email in local storage
+        ;
+        console.log("Stored Email from localStorage:", localStorage.getItem("userEmail"));
+  
+        // Set registered state
+        alert(error.response.data[0].description);
       }
     },
   });
-
   if (isRegistered) {
     return <VerifyOTP />;
   }
@@ -217,6 +208,44 @@ export default function Register() {
                 <div className="invalid-feedback">{formik.errors.password}</div>
               )}
             </div>
+
+
+
+
+            {/* Phone Number */}
+<div className="mb-3">
+  <label htmlFor="phoneNumber" className="form-label">
+    Phone Number (Optional)
+  </label>
+  <input
+    type="text"
+    id="phoneNumber"
+    name="phoneNumber"
+    className="form-control bg-dark text-light border-secondary"
+    placeholder="Enter your phone number"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.phoneNumber}
+  />
+</div>
+
+{/* Profile Picture URL */}
+<div className="mb-3">
+  <label htmlFor="profilePictureUrl" className="form-label">
+    Profile Picture URL (Optional)
+  </label>
+  <input
+    type="text"
+    id="profilePictureUrl"
+    name="profilePictureUrl"
+    className="form-control bg-dark text-light border-secondary"
+    placeholder="Enter image URL"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.profilePictureUrl}
+  />
+</div>
+
 
             {/* Submit Button */}
             <button

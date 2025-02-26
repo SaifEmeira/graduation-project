@@ -31,6 +31,7 @@ export default function ForgetPassword() {
         // Check if the response is successful
         if (response.status === 200) {
           console.log('API Response:', response.data);
+          localStorage.removeItem("token");
 
           // Store the email in local storage
           localStorage.setItem('userEmail', values.email);
