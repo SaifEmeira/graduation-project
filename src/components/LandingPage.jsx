@@ -1,15 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-import landingImage from '../assets/Landingimage.png'
+import landingImage from '../assets/LandingImage.png'
 import React from 'react'
 import Section2LandingPage from './Section2LandingPage'
 
 
 
 export default function LandingPage() {
-
-  
-
 
   return (
     <>
@@ -21,7 +18,6 @@ export default function LandingPage() {
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
-      // height: "100vh", // Full height of the viewport
       
   }}
 >

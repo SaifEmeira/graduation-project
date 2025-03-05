@@ -1,4 +1,3 @@
-import React from 'react';
 import ahramat from "../assets/pexels-matteo-roman-1151921619-21316202.jpg";
 import { useFormik } from "formik";
 import * as Yup from "yup";

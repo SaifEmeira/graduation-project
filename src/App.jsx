@@ -1,50 +1,26 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-// import LandingPage from './components/landingPage'
-
-import Layout from './Components/Layout'
-import ForgetPassword from './Components/ForgetPassword'
-import VerifyOTP from './Components/VerifyOTP'
-import ResetPassword from './Components/ResetPassword'
-import LoginForm from './Components/Login'
-import Register from './Components/Register'
-import LandingPage from './Components/landingPage'
-
-
-
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import ForgetPassword from './components/ForgetPassword';
+import VerifyOTP from './components/VerifyOTP';
+import ResetPassword from './components/ResetPassword';
+import LoginForm from './components/LoginForm';
+import Register from './components/Register';
+import Destinations from './components/Destinations/Destinations';
 
 export default function App() {
-
-
-  const routes = createBrowserRouter([
-    {
-      path: "/", // Default route
-      element: <Layout />,
-    },
-    {
-      path: "/forgetPassword", // Default route
-      element: <ForgetPassword />,
-    },
-    {
-      path: "/Otp", // OTP verification route
-      element: <VerifyOTP />,
-    },
-    {
-      path: "/resetPassword", // OTP verification route
-      element: <ResetPassword />,
-    },
-    {
-      path: "/login", // OTP verification route
-      element: <LoginForm />,
-    },
-    {
-      path: "/register", // OTP verification route
-      element: <Register />,
-    },
-  ]);
   return (
-    <RouterProvider router={routes}></RouterProvider>
-  )
+    <Router> {/* Home page */}
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/otp" element={<VerifyOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/destinations" element={<Destinations />} />
+      </Routes>
+    </Router>
+  );
 }

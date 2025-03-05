@@ -1,4 +1,3 @@
-import React from 'react';
 import ahramat from '../assets/pexels-matteo-roman-1151921619-21316202.jpg';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';

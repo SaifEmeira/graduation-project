@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -8,7 +8,6 @@ import GizaLogin from "../assets/gizaLogin.jpg";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import LandingPage from './LandingPage';
 
 export default function LoginForm() {
   // State for toggling visibility of the password field
@@ -178,7 +177,7 @@ export default function LoginForm() {
 
             {/* Sign Up */}
             <p className="text-center text-white">
-              Don't have an account?{" "}
+              do not have an account?{" "}
               <Link
                 to="/register"
                 className="text-decoration-underline"
