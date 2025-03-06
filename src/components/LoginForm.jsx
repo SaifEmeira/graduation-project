@@ -155,7 +155,7 @@ export default function LoginForm() {
                       </label>
                     </div>
                     <Link
-                      to="/forgetPassword"
+                      to="/forget-password"
                       className="text-white text-decoration-underline"
                     >
                       Forgot password?

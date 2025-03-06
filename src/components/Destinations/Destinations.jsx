@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
-import landingImage from "../../assets/LandingImage.png";
+import destination from "../../assets/Destinations.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faStar } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -34,6 +34,11 @@ const sliderSettings = {
   ],
 };
 
+const getRandomSubset = (arr, size) => {
+  const shuffled = [...arr].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, size);
+};
+
 const TourCard = ({ tour }) => (
   <motion.div
     className="p-2"
@@ -49,11 +54,6 @@ const TourCard = ({ tour }) => (
           alt={tour.name || "Tour Image"}
           style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px", height: "200px", objectFit: "cover" }}
         />
-        {tour.bestSeller && (
-          <span className="badge bg-warning text-dark position-absolute top-0 start-0 m-2 px-3 py-1 rounded-pill">
-            Best Seller
-          </span>
-        )}
       </div>
       <div className="card-body text-center">
         <h5 className="card-title fw-bold">{tour.name || "Unknown Tour"}</h5>
@@ -99,46 +99,43 @@ export default function Destinations() {
       <div
         className="d-flex justify-content-center align-items-center vh-100 text-center"
         style={{
-          backgroundImage: `url(${landingImage})`,
+          backgroundImage: `url(${destination})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundColor: "#171513",
         }}
       >
-        <h1 className="text-white display-1 fw-bold" style={{ fontFamily: "cursive", textShadow: "2px 2px 10px rgba(0, 0, 0, 0.8)" }}>
-          Destinations
+        <h1 className="text-white display-1 fw-bold" style={{ textShadow: "2px 2px 10px rgba(0, 0, 0, 0.8)" }}>
+          D e s t i n a t i o n s
         </h1>
       </div>
-      {[...Array(1)].map((_, index) => (
-        <div key={index} className="text-white py-5" style={{ backgroundColor: "#1e1b18", paddingLeft: "5vw", paddingRight: "5vw" }}>
-          {loading && <p className="text-center">Loading tours...</p>}
-          {error && <p className="text-danger text-center">Error: {error}</p>}
-          {!loading && !error && (
-            <>
-              <h2 className="mb-4 text-center fw-bold">All Tours</h2>
-              <Slider {...sliderSettings}>
-                {tours.map((tour) => (
-                  <TourCard key={tour.id} tour={tour} />
-                ))}
-              </Slider>
-              <h2 className="mb-4 text-center fw-bold mt-5">Featured Tours</h2>
-              <Slider {...sliderSettings}>
-                {tours.map((tour) => (
-                  <TourCard key={tour.id} tour={tour} />
-                ))}
-              </Slider>
-
-              <h2 className="mb-4 text-center fw-bold mt-5">Best Tours</h2>
-              <Slider {...sliderSettings}>
-                {tours.map((tour) => (
-                  <TourCard key={tour.id} tour={tour} />
-                ))}
-              </Slider>
-            </>
-          )}
-        </div>
-      ))}
+      <div className="text-white py-5" style={{ backgroundColor: "#1e1b18", paddingLeft: "5vw", paddingRight: "5vw" }}>
+        {loading && <p className="text-center">Loading tours...</p>}
+        {error && <p className="text-danger text-center">Error: {error}</p>}
+        {!loading && !error && (
+          <>
+            <h2 className="mb-4 text-center fw-bold">All Tours</h2>
+            <Slider {...sliderSettings}>
+              {getRandomSubset(tours, 6).map((tour) => (
+                <TourCard key={tour.id} tour={tour} />
+              ))}
+            </Slider>
+            <h2 className="mb-4 text-center fw-bold mt-5">Featured Tours</h2>
+            <Slider {...sliderSettings}>
+              {getRandomSubset(tours, 6).map((tour) => (
+                <TourCard key={tour.id} tour={tour} />
+              ))}
+            </Slider>
+            <h2 className="mb-4 text-center fw-bold mt-5">Best Tours</h2>
+            <Slider {...sliderSettings}>
+              {getRandomSubset(tours, 6).map((tour) => (
+                <TourCard key={tour.id} tour={tour} />
+              ))}
+            </Slider>
+          </>
+        )}
+      </div>
     </>
   );
 }

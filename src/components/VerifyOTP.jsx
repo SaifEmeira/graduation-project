@@ -39,7 +39,7 @@ export default function VerifyOTP() {
 console.log(userEmail);
 
         // Construct the API URL with email and OTP
-        const apiUrl = `http://tourguide.tryasp.net/auth/ConfirmEmail?email=${userEmail}&Otp=${otpCode}`;
+        const apiUrl = `http://tourguide.tryasp.net/auth/ConfirmEmail?Email=${userEmail}&Otp=${otpCode}`;
         
         // Make the API call using Axios
         const response = await axios.get(apiUrl);

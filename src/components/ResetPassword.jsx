@@ -52,19 +52,27 @@ export default function ResetPassword() {
     }),
     onSubmit: async (values) => {
       try {
-        console.log(Email);
-        console.log(values.otp);
-        // Convert OTP array to a single string
-    const otpString = values.otp.join("");
-    console.log("Formatted OTP:", otpString);
+        console.log("Email:", Email);
+console.log("OTP Array:", values.otp);
+
+// Convert OTP array to a single string
+const otpString = values.otp.join("");
+console.log("Formatted OTP:", otpString);
+console.log("New Password:", values.newPassword);
+        
+        // Call the API with Axios
+        const params = {
+          Email,
+          Otp: otpString,
+          NewPassword: values.newPassword,
+        };
+        
+        // Log params before making the API call
+        console.log("API Request Params:", params);
         
         // Call the API with Axios
         const response = await axios.get("http://tourguide.tryasp.net/auth/ResetPassword", {
-          params: {
-            Email,
-            Otp: otpString,
-            NewPassword: values.newPassword,
-          },
+          params,
         });
 
         // Handle successful response

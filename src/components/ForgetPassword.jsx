@@ -36,7 +36,7 @@ export default function ForgetPassword() {
           localStorage.setItem('userEmail', values.email);
 
           // Navigate to the Reset Password page
-          navigate('/ResetPassword');
+          navigate('/reset-password');
         } else {
           console.error('Unexpected API response:', response);
           alert('An error occurred. Please try again later.');
