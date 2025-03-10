@@ -8,6 +8,7 @@ import ResetPassword from './components/ResetPassword';
 import LoginForm from './components/LoginForm';
 import Register from './components/Register';
 import Destinations from './components/Destinations/Destinations';
+import AboutUs from './Components/AboutUs';
 
 export default function App() {
   return (
@@ -20,6 +21,8 @@ export default function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/destinations" element={<Destinations />} />
+        <Route path="/about" element={<AboutUs />} />
+
       </Routes>
     </Router>
   );

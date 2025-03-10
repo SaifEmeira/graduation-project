@@ -48,7 +48,7 @@ export default function LoginForm() {
       // Handle successful login (e.g., redirect to a new page)
       if (response.status===200) {
         alert("Login successful!");
-        navigate("/LandingPage"); // Redirect to the dashboard after successful login
+        navigate("/"); // Redirect to the dashboard after successful login
       } else {
         alert("Invalid credentials. Please try again.");
       }
