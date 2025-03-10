@@ -4,6 +4,11 @@ import Nancy from "../assets/WhatsApp Image 2025-03-07 at 10.14.57 PM.jpeg";
 import Nada from "../assets/WhatsApp Image 2025-03-07 at 10.09.06 PM.jpeg";
 import raheem from "../assets/WhatsApp Image 2025-03-07 at 3.59.07 PM.jpeg";
 import saif from "../assets/WhatsApp Image 2025-03-09 at 12.06.34 PM.jpeg";
+import Amir from "../assets/amir.jpeg";
+import toqa from "../assets/toqa.jpeg";
+import radwa from "../assets/radwa.jpeg";
+
+
 
 
 
@@ -52,7 +57,7 @@ export default function AboutUs() {
         <img src={Nancy} alt="Nancy" className="image" />
         <div className="overlay text-warning d-flex flex-column align-items-center justify-content-center">
           <h2>ENG. Nancy Rashad</h2>
-          <p>Mobile Developer</p>
+          <p>Flutter Developer</p>
         </div>
       </div>
     </div>
@@ -73,7 +78,7 @@ export default function AboutUs() {
       <div className="image-container">
         <img src={Nada} alt="Nada" className="image" />
         <div className="overlay text-warning d-flex flex-column align-items-center justify-content-center">
-          <h2>ENG. Nada </h2>
+          <h2>ENG. Nada Khaled </h2>
           <p>UI/UX Designer</p>
         </div>
       </div>
@@ -93,10 +98,10 @@ export default function AboutUs() {
     {/* Image 5 */}
     <div className="col-md-4 d-flex justify-content-center">
       <div className="image-container">
-        <img src={Nancy} alt="Nancy" className="image" />
+        <img src={radwa} alt="radwa" className="image" />
         <div className="overlay text-warning d-flex flex-column align-items-center justify-content-center">
-          <h2>ENG. Nancy Rashad</h2>
-          <p>Mobile Developer</p>
+          <h2>ENG. Radwa Nader</h2>
+          <p>Backend Developer</p>
         </div>
       </div>
     </div>
@@ -104,10 +109,10 @@ export default function AboutUs() {
     {/* Image 6 */}
     <div className="col-md-4 d-flex justify-content-center">
       <div className="image-container">
-        <img src={Nancy} alt="Nancy" className="image" />
+        <img src={toqa} alt="toqa" className="image" />
         <div className="overlay text-warning d-flex flex-column align-items-center justify-content-center">
-          <h2>ENG. Nancy Rashad</h2>
-          <p>Mobile Developer</p>
+          <h2>ENG. Toqa Ahmed</h2>
+          <p>Flutter Developer</p>
         </div>
       </div>
     </div>
@@ -115,10 +120,10 @@ export default function AboutUs() {
     {/* Image 7 (Will be centered if only 1 in last row) */}
     <div className="col-md-4 offset-md-4 d-flex justify-content-center">
       <div className="image-container">
-        <img src={Nancy} alt="Nancy" className="image" />
+        <img src={Amir} alt="amir" className="image" />
         <div className="overlay text-warning d-flex flex-column align-items-center justify-content-center">
-          <h2>ENG. Nancy Rashad</h2>
-          <p>Mobile Developer</p>
+          <h2>ENG. Amir Elsagan</h2>
+          <p>Backend Developer</p>
         </div>
       </div>
     </div>
