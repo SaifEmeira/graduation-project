@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const API_URL = "http://tourguide.tryasp.net/api/Tours";
 
@@ -39,7 +40,7 @@ const getRandomSubset = (arr, size) => {
   return shuffled.slice(0, size);
 };
 
-const TourCard = ({ tour }) => (
+const TourCard = ({ tour ,onDetailsClick }) => (
   <motion.div
     className="p-2"
     initial={{ opacity: 0, scale: 0.9 }}
@@ -64,7 +65,7 @@ const TourCard = ({ tour }) => (
           <FontAwesomeIcon icon={faStar} className="me-1" /> {tour.rating || "0.0"} ({tour.reviews || "0"} reviews)
         </p>
         <p className="fw-bold">From ${tour.price || "--"}</p>
-        <button className="btn btn-warning px-4 rounded-pill">View Details</button>
+        <button  onClick={() => onDetailsClick(tour.id)} className="btn btn-warning px-4 rounded-pill">View Details</button>
       </div>
     </div>
   </motion.div>
@@ -74,6 +75,19 @@ export default function Destinations() {
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+
+  const navigate = useNavigate();
+
+
+
+  const handleDetailsClick = (id) => {
+    console.log("View Details clicked for tour ID:", id);
+    // ممكن تروح لصفحة التفاصيل هنا باستخدام react-router
+    // navigate(`/tours/${id}`)
+  navigate(`/details/${id}`);
+
+  };
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -118,19 +132,19 @@ export default function Destinations() {
             <h2 className="mb-4 text-center fw-bold">All Tours</h2>
             <Slider {...sliderSettings}>
               {getRandomSubset(tours, 6).map((tour) => (
-                <TourCard key={tour.id} tour={tour} />
+                <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
               ))}
             </Slider>
             <h2 className="mb-4 text-center fw-bold mt-5">Featured Tours</h2>
             <Slider {...sliderSettings}>
               {getRandomSubset(tours, 6).map((tour) => (
-                <TourCard key={tour.id} tour={tour} />
+                <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
               ))}
             </Slider>
             <h2 className="mb-4 text-center fw-bold mt-5">Best Tours</h2>
             <Slider {...sliderSettings}>
               {getRandomSubset(tours, 6).map((tour) => (
-                <TourCard key={tour.id} tour={tour} />
+                <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
               ))}
             </Slider>
           </>

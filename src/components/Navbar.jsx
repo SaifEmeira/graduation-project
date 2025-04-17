@@ -70,12 +70,7 @@ export default function CustomNavbar() {
             </Nav.Link>
           </Nav>
           <div className="d-flex mt-3">
-            <Button
-              className="me-2 border-0"
-              style={{ backgroundColor: "#AD764A" }}
-            >
-              Become a Guide
-            </Button>
+            
             <Button variant="outline-light" onClick={handleAuthClick}>
               {token ? "Logout" : "Login"}
             </Button>
