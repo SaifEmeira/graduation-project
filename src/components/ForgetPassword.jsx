@@ -23,7 +23,7 @@ export default function ForgetPassword() {
 
       try {
         // Call the API with Axios
-        const response = await axios.post('http://tourguide.tryasp.net/auth/ForgotPassword', {
+        const response = await axios.post('https://tourguide.tryasp.net/auth/ForgotPassword', {
           email: values.email,
         });
 

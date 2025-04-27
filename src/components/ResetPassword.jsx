@@ -71,7 +71,7 @@ console.log("New Password:", values.newPassword);
         console.log("API Request Params:", params);
         
         // Call the API with Axios
-        const response = await axios.get("http://tourguide.tryasp.net/auth/ResetPassword", {
+        const response = await axios.get("https://tourguide.tryasp.net/auth/ResetPassword", {
           params,
         });
 

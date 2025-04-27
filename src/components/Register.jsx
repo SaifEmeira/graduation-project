@@ -46,7 +46,7 @@ export default function Register() {
       console.log("Form submitted with values:", values);
       try {
         // API Call
-        const response = await axios.post("http://tourguide.tryasp.net/auth/Register", {
+        const response = await axios.post("https://tourguide.tryasp.net/auth/Register", {
           firstName: values.firstName,
           lastName: values.lastName,
           email: values.email,

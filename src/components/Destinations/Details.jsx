@@ -31,7 +31,7 @@ export default function Details() {
   useEffect(() => {
     const fetchTour = async () => {
       try {
-        const res = await fetch(`http://tourguide.tryasp.net/api/Tours/${id}`);
+        const res = await fetch(`https://tourguide.tryasp.net/api/Tours/${id}`);
         const data = await res.json();
         setTour(data);
       } catch (err) {

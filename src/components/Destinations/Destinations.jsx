@@ -11,7 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "http://tourguide.tryasp.net/api/Tours";
+const API_URL = "https://tourguide.tryasp.net/api/Tours";
 
 const sliderSettings = {
   dots: false,
