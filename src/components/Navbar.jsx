@@ -62,12 +62,7 @@ export default function CustomNavbar() {
             >
               About Us
             </Nav.Link>
-            <Nav.Link
-              onClick={() => navigate("/contact")}
-              className="text-white mx-3"
-            >
-              Contact Us
-            </Nav.Link>
+            
           </Nav>
           <div className="d-flex mt-3">
             
