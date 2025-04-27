@@ -38,7 +38,7 @@ export default function LoginForm() {
     try {
       // API Call (GET request with query parameters)
       const response = await axios.get(
-        `http://tourguide.tryasp.net/auth/Login?Email=${encodeURIComponent(values.email)}&Password=${encodeURIComponent(values.password)}`
+        `https://tourguide.tryasp.net/auth/Login?Email=${encodeURIComponent(values.email)}&Password=${encodeURIComponent(values.password)}`
       );
 
       console.log("API Response:", response);
