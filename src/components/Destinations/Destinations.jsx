@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import destination from "../../assets/Destinations.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faStar, faSearch, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -40,7 +40,7 @@ const getRandomSubset = (arr, size) => {
   return shuffled.slice(0, size);
 };
 
-const TourCard = ({ tour ,onDetailsClick }) => (
+const TourCard = ({ tour, onDetailsClick }) => (
   <motion.div
     className="p-2"
     initial={{ opacity: 0, scale: 0.9 }}
@@ -55,6 +55,10 @@ const TourCard = ({ tour ,onDetailsClick }) => (
           alt={tour.name || "Tour Image"}
           style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px", height: "200px", objectFit: "cover" }}
         />
+        <div className="position-absolute bottom-0 start-0 bg-dark bg-opacity-75 px-2 py-1">
+          <FontAwesomeIcon icon={faMapMarkerAlt} className="me-1" />
+          <small>{tour.location || "Unknown Location"}</small>
+        </div>
       </div>
       <div className="card-body text-center">
         <h5 className="card-title fw-bold">{tour.name || "Unknown Tour"}</h5>
@@ -65,45 +69,66 @@ const TourCard = ({ tour ,onDetailsClick }) => (
           <FontAwesomeIcon icon={faStar} className="me-1" /> {tour.rating || "0.0"} ({tour.reviews || "0"} reviews)
         </p>
         <p className="fw-bold">From ${tour.price || "--"}</p>
-        <button  onClick={() => onDetailsClick(tour.id)} className="btn btn-warning px-4 rounded-pill">View Details</button>
+        <button onClick={() => onDetailsClick(tour.id)} className="btn btn-warning px-4 rounded-pill">View Details</button>
       </div>
     </div>
   </motion.div>
 );
 
 export default function Destinations() {
-  const [tours, setTours] = useState([]);
+  const [allTours, setAllTours] = useState([]);
+  const [filteredTours, setFilteredTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-
+  // Extract unique locations from tours
+  const locations = [...new Set(allTours.map(tour => tour.location))].sort();
 
   const handleDetailsClick = (id) => {
-    console.log("View Details clicked for tour ID:", id);
-    // ممكن تروح لصفحة التفاصيل هنا باستخدام react-router
-    // navigate(`/tours/${id}`)
-  navigate(`/details/${id}`);
+    navigate(`/details/${id}`);
+  };
 
+  const handleSearch = () => {
+    if (selectedLocation) {
+      setSearchTerm(selectedLocation);
+      // Filter tours client-side
+      const filtered = allTours.filter(tour => 
+        tour.location.toLowerCase().includes(selectedLocation.toLowerCase())
+      );
+      setFilteredTours(filtered);
+    } else {
+      setSearchTerm("");
+      setFilteredTours(allTours);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSelectedLocation("");
+    setSearchTerm("");
+    setFilteredTours(allTours);
+  };
+
+  const fetchTours = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        throw new Error("Failed to fetch tours");
+      }
+      const data = await response.json();
+      setAllTours(data.tours || []);
+      setFilteredTours(data.tours || []);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchTours = async () => {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw new Error("Failed to fetch tours");
-        }
-        const data = await response.json();
-        setTours(data.tours || []);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchTours();
   }, []);
 
@@ -124,31 +149,117 @@ export default function Destinations() {
           D e s t i n a t i o n s
         </h1>
       </div>
-      <div className="text-white py-5" style={{ backgroundColor: "#1e1b18", paddingLeft: "5vw", paddingRight: "5vw" }}>
-        {loading && <p className="text-center">Loading tours...</p>}
-        {error && <p className="text-danger text-center">Error: {error}</p>}
-        {!loading && !error && (
-          <>
-            <h2 className="mb-4 text-center fw-bold">All Tours</h2>
-            <Slider {...sliderSettings}>
-              {getRandomSubset(tours, 6).map((tour) => (
-                <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
-              ))}
-            </Slider>
-            <h2 className="mb-4 text-center fw-bold mt-5">Featured Tours</h2>
-            <Slider {...sliderSettings}>
-              {getRandomSubset(tours, 6).map((tour) => (
-                <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
-              ))}
-            </Slider>
-            <h2 className="mb-4 text-center fw-bold mt-5">Best Tours</h2>
-            <Slider {...sliderSettings}>
-              {getRandomSubset(tours, 6).map((tour) => (
-                <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
-              ))}
-            </Slider>
-          </>
-        )}
+      
+      <div className="container-fluid py-5 overflow-hidden" style={{ backgroundColor: "#1e1b18" }}>
+        <div className="row">
+          {/* Search Column */}
+          <div className="col-md-2 mb-4 mb-md-0 ">
+            <div className="card text-white shadow-lg rounded" style={{ backgroundColor: "#1e1b18", borderColor: "#444" }}>
+              <div className="card-header bg-dark">
+                <h4 className="mb-0">
+                  <FontAwesomeIcon icon={faSearch} className="me-2" />
+                  Search Tours
+                </h4>
+              </div>
+              <div className="card-body">
+                <div className="mb-3">
+                  <h5 className="mb-3">Filter by Location</h5>
+                  <div className="mb-3">
+                    <select
+                      className="form-select bg-dark text-white"
+                      value={selectedLocation}
+                      onChange={(e) => setSelectedLocation(e.target.value)}
+                    >
+                      <option value="">All Locations</option>
+                      {locations.map((location) => (
+                        <option key={location} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="d-grid gap-2">
+                  <button 
+                    onClick={handleSearch}
+                    className="btn btn-warning rounded-pill"
+                    disabled={!selectedLocation}
+                  >
+                    Search
+                  </button>
+                  {searchTerm && (
+                    <button 
+                      onClick={handleClearSearch}
+                      className="btn btn-outline-light rounded-pill"
+                    >
+                      Clear Search
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Tours Column */}
+          <div className="col-md-9">
+            {loading && <p className="text-center text-white">Loading tours...</p>}
+            {error && <p className="text-danger text-center">Error: {error}</p>}
+            {!loading && !error && (
+              <>
+                {searchTerm ? (
+                  <>
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                      <h2 className="fw-bold text-white mb-0">
+                        Tours in {searchTerm}
+                      </h2>
+                      <small className="text-muted">
+                        Showing {filteredTours.length} results
+                      </small>
+                    </div>
+                    {filteredTours.length > 0 ? (
+                      <Slider {...sliderSettings}>
+                        {filteredTours.map((tour) => (
+                          <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
+                        ))}
+                      </Slider>
+                    ) : (
+                      <div className="text-center text-white py-5">
+                        <h4>No tours found in {searchTerm}</h4>
+                        <button 
+                          onClick={handleClearSearch}
+                          className="btn btn-warning mt-3 rounded-pill"
+                        >
+                          Show All Tours
+                        </button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <h2 className="mb-4 text-center fw-bold text-white">All Tours</h2>
+                    <Slider {...sliderSettings}>
+                      {getRandomSubset(filteredTours, 6).map((tour) => (
+                        <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
+                      ))}
+                    </Slider>
+                    <h2 className="mb-4 text-center fw-bold mt-5 text-white">Featured Tours</h2>
+                    <Slider {...sliderSettings}>
+                      {getRandomSubset(filteredTours, 6).map((tour) => (
+                        <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
+                      ))}
+                    </Slider>
+                    <h2 className="mb-4 text-center fw-bold mt-5 text-white">Best Tours</h2>
+                    <Slider {...sliderSettings}>
+                      {getRandomSubset(filteredTours, 6).map((tour) => (
+                        <TourCard key={tour.id} tour={tour} onDetailsClick={handleDetailsClick} />
+                      ))}
+                    </Slider>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
