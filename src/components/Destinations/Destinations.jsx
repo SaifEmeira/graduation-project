@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import destination from "../../assets/Destinations.jpg";
@@ -81,8 +80,15 @@ export default function Destinations() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+
+  const categories = [
+    { id: 4, name: "Historical Tours" },
+    { id: 5, name: "Adventure Tours" },
+    { id: 6, name: "Cultural Tours" }
+  ];
 
   // Extract unique locations from tours
   const locations = [...new Set(allTours.map(tour => tour.location))].sort();
@@ -91,29 +97,44 @@ export default function Destinations() {
     navigate(`/details/${id}`);
   };
 
-  const handleSearch = () => {
-    if (selectedLocation) {
-      setSearchTerm(selectedLocation);
-      // Filter tours client-side
-      const filtered = allTours.filter(tour => 
-        tour.location.toLowerCase().includes(selectedLocation.toLowerCase())
-      );
-      setFilteredTours(filtered);
-    } else {
-      setSearchTerm("");
-      setFilteredTours(allTours);
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      let url = API_URL;
+      
+      // Build query parameters
+      const params = new URLSearchParams();
+      if (selectedLocation) params.append('location', selectedLocation);
+      if (selectedCategory) params.append('CategoryIds', selectedCategory);
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch tours");
+      }
+      const data = await response.json();
+      
+      setFilteredTours(data.tours || []);
+      setSearchTerm(selectedLocation || categories.find(c => c.id === selectedCategory)?.name || "");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleClearSearch = () => {
     setSelectedLocation("");
+    setSelectedCategory(null);
     setSearchTerm("");
-    setFilteredTours(allTours);
+    fetchAllTours();
   };
 
-  const fetchTours = async () => {
+  const fetchAllTours = async () => {
     try {
-      setLoading(true);
       const response = await fetch(API_URL);
       if (!response.ok) {
         throw new Error("Failed to fetch tours");
@@ -129,7 +150,7 @@ export default function Destinations() {
   };
 
   useEffect(() => {
-    fetchTours();
+    fetchAllTours();
   }, []);
 
   return (
@@ -153,7 +174,7 @@ export default function Destinations() {
       <div className="container-fluid py-5 overflow-hidden" style={{ backgroundColor: "#1e1b18" }}>
         <div className="row">
           {/* Search Column */}
-          <div className="col-md-2 mb-4 mb-md-0 ">
+          <div className="col-md-2 mb-4 mb-md-0">
             <div className="card text-white shadow-lg rounded" style={{ backgroundColor: "#1e1b18", borderColor: "#444" }}>
               <div className="card-header bg-dark">
                 <h4 className="mb-0">
@@ -162,6 +183,40 @@ export default function Destinations() {
                 </h4>
               </div>
               <div className="card-body">
+                {/* Category Filter */}
+                <div className="mb-4">
+                  <h5 className="mb-3">Tour Categories</h5>
+                  <div className="form-check mb-2">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="category"
+                      id="category-all"
+                      checked={!selectedCategory}
+                      onChange={() => setSelectedCategory(null)}
+                    />
+                    <label className="form-check-label" htmlFor="category-all">
+                      All Categories
+                    </label>
+                  </div>
+                  {categories.map((category) => (
+                    <div className="form-check mb-2" key={category.id}>
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="category"
+                        id={`category-${category.id}`}
+                        checked={selectedCategory === category.id}
+                        onChange={() => setSelectedCategory(category.id)}
+                      />
+                      <label className="form-check-label" htmlFor={`category-${category.id}`}>
+                        {category.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Location Filter */}
                 <div className="mb-3">
                   <h5 className="mb-3">Filter by Location</h5>
                   <div className="mb-3">
@@ -183,11 +238,11 @@ export default function Destinations() {
                   <button 
                     onClick={handleSearch}
                     className="btn btn-warning rounded-pill"
-                    disabled={!selectedLocation}
+                    disabled={!selectedLocation && !selectedCategory}
                   >
                     Search
                   </button>
-                  {searchTerm && (
+                  {(searchTerm || selectedCategory) && (
                     <button 
                       onClick={handleClearSearch}
                       className="btn btn-outline-light rounded-pill"
@@ -210,7 +265,9 @@ export default function Destinations() {
                   <>
                     <div className="d-flex justify-content-between align-items-center mb-4">
                       <h2 className="fw-bold text-white mb-0">
-                        Tours in {searchTerm}
+                        {selectedCategory 
+                          ? categories.find(c => c.id === selectedCategory)?.name 
+                          : `Tours in ${searchTerm}`}
                       </h2>
                       <small className="text-muted">
                         Showing {filteredTours.length} results
@@ -224,7 +281,7 @@ export default function Destinations() {
                       </Slider>
                     ) : (
                       <div className="text-center text-white py-5">
-                        <h4>No tours found in {searchTerm}</h4>
+                        <h4>No tours found matching your criteria</h4>
                         <button 
                           onClick={handleClearSearch}
                           className="btn btn-warning mt-3 rounded-pill"
