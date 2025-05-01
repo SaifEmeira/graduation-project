@@ -41,6 +41,8 @@ export default function Register() {
       password: Yup.string()
         .min(6, "Password must be at least 6 characters")
         .required("Password is required"),
+        phoneNumber: Yup.string()
+        .required("Phone Number is required")
     }),
     onSubmit: async (values) => {
       console.log("Form submitted with values:", values);
@@ -215,7 +217,7 @@ export default function Register() {
             {/* Phone Number */}
 <div className="mb-3">
   <label htmlFor="phoneNumber" className="form-label">
-    Phone Number (Optional)
+    Phone Number 
   </label>
   <input
     type="text"
@@ -229,22 +231,7 @@ export default function Register() {
   />
 </div>
 
-{/* Profile Picture URL */}
-<div className="mb-3">
-  <label htmlFor="profilePictureUrl" className="form-label">
-    Profile Picture URL (Optional)
-  </label>
-  <input
-    type="text"
-    id="profilePictureUrl"
-    name="profilePictureUrl"
-    className="form-control bg-dark text-light border-secondary"
-    placeholder="Enter image URL"
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-    value={formik.values.profilePictureUrl}
-  />
-</div>
+
 
 
             {/* Submit Button */}

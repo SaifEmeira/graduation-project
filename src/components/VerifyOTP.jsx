@@ -43,12 +43,15 @@ console.log(userEmail);
         
         // Make the API call using Axios
         const response = await axios.get(apiUrl);
+        console.log(response);
         
-        console.log("API Response:", response.data);
+        console.log("API Response:", response.data.message);
 
         // If OTP is correct, navigate to the reset password page
-        if (response.data.success) {
-          navigate("/resetPassword");
+        if (response.data.message === "Email confirmed successfully") {
+          navigate("/login");
+          alert("Verefird Successfully");
+
         } else {
           alert("Invalid OTP. Please try again.");
         }

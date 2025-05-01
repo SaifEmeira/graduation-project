@@ -44,7 +44,19 @@ export default function CustomNavbar() {
         >
           LOCO
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Toggle 
+  aria-controls="navbar-nav" 
+  style={{ 
+    border: 'none',
+    backgroundColor: 'black',  // Add black background
+    borderRadius: '4px',      // Optional: add some rounded corners
+    padding: '8px 10px'       // Adjust padding to make it look better
+  }}
+>
+  <span className="navbar-toggler-icon" style={{ 
+    backgroundImage: "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e\")" 
+  }} />
+</Navbar.Toggle>
         <Navbar.Collapse id="navbar-nav">
           <Nav className="mx-auto mt-3">
             <Nav.Link onClick={() => navigate("/")} className="text-white mx-3">
@@ -62,10 +74,8 @@ export default function CustomNavbar() {
             >
               About Us
             </Nav.Link>
-            
           </Nav>
           <div className="d-flex mt-3">
-            
             <Button variant="outline-light" onClick={handleAuthClick}>
               {token ? "Logout" : "Login"}
             </Button>
