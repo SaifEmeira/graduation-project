@@ -14,6 +14,7 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Footer from "../Footer";
 
 export default function Details() {
   const { id } = useParams();
@@ -361,6 +362,8 @@ export default function Details() {
           </div>
         )}
       </div>
+                  <Footer />  
+      
     </>
   );
 }

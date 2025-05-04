@@ -14,6 +14,7 @@ import radwa from "../assets/radwa.jpeg";
 
 
 import Navbar from "../components/Navbar";
+import Footer from "./Footer";
 
 
 
@@ -131,6 +132,7 @@ export default function AboutUs() {
   </div>
 </div>
 
+            <Footer />  
 
     </>
   )
