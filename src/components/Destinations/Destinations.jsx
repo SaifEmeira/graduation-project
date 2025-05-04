@@ -105,7 +105,7 @@ export default function Destinations() {
       
       // Build query parameters
       const params = new URLSearchParams();
-      if (selectedLocation) params.append('location', selectedLocation);
+      if (selectedLocation) params.append('SearchTerm', selectedLocation);
       if (selectedCategory) params.append('CategoryIds', selectedCategory);
       
       if (params.toString()) {
