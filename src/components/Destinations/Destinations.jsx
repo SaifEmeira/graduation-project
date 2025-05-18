@@ -83,6 +83,10 @@ export default function Destinations() {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [minAvailablePrice, setMinAvailablePrice] = useState(0);
+
+const [maxPrice, setMaxPrice] = useState("");
   const navigate = useNavigate();
 
   const categories = [
@@ -102,37 +106,51 @@ export default function Destinations() {
     try {
       setLoading(true);
       let url = API_URL;
-      
-      // Build query parameters
+  
       const params = new URLSearchParams();
       if (selectedLocation) params.append('SearchTerm', selectedLocation);
       if (selectedCategory) params.append('CategoryIds', selectedCategory);
-      
+      if (minPrice) params.append('MinPrice', parseInt(minPrice));
+      if (maxPrice) params.append('MaxPrice', parseInt(maxPrice));
+  
       if (params.toString()) {
         url += `?${params.toString()}`;
       }
 
+      if (minPrice && parseFloat(minPrice) < minAvailablePrice) {
+        alert(`Minimum price must be at least $${minAvailablePrice}`);
+        return;
+      }
+      
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch tours");
       }
+  
       const data = await response.json();
-      
       setFilteredTours(data.tours || []);
-      setSearchTerm(selectedLocation || categories.find(c => c.id === selectedCategory)?.name || "");
+      setSearchTerm(
+        selectedLocation ||
+        categories.find(c => c.id === selectedCategory)?.name ||
+        (minPrice || maxPrice ? `Price Range` : "")
+      );
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleClearSearch = () => {
     setSelectedLocation("");
     setSelectedCategory(null);
     setSearchTerm("");
+    setMinPrice("");
+    setMaxPrice("");
     fetchAllTours();
   };
+  
 
   const fetchAllTours = async () => {
     try {
@@ -143,6 +161,11 @@ export default function Destinations() {
       const data = await response.json();
       setAllTours(data.tours || []);
       setFilteredTours(data.tours || []);
+      if (data.tours && data.tours.length > 0) {
+        const prices = data.tours.map(t => parseFloat(t.price)).filter(p => !isNaN(p));
+        const min = Math.min(...prices);
+        setMinAvailablePrice(min);
+      }
     } catch (error) {
       setError(error.message);
     } finally {
@@ -235,11 +258,43 @@ export default function Destinations() {
                     </select>
                   </div>
                 </div>
+                {/* Price Filter */}
+<div className="mb-4">
+  <h5 className="mb-3">Price Range ($)</h5>
+  <div className="mb-2">
+    <input
+      type="number"
+      className="form-control bg-dark text-white"
+      placeholder="Min Price"
+      value={minPrice}
+      onChange={(e) => setMinPrice(e.target.value)}
+      min={minAvailablePrice}
+    />
+    <small className="text-danger fw-bolder mt-1 d-block">
+      Minimum available price: ${minAvailablePrice}
+    </small>
+  </div>
+  <div>
+    <input
+      type="number"
+      className="form-control bg-dark text-white"
+      placeholder="Max Price"
+      value={maxPrice}
+      onChange={(e) => setMaxPrice(e.target.value)}
+    />
+  </div>
+</div>
                 <div className="d-grid gap-2">
                   <button 
                     onClick={handleSearch}
                     className="btn btn-warning rounded-pill"
-                    disabled={!selectedLocation && !selectedCategory}
+                    disabled={
+                      !selectedLocation &&
+                      !selectedCategory &&
+                      !minPrice &&
+                      !maxPrice
+                    }
+                    
                   >
                     Search
                   </button>
