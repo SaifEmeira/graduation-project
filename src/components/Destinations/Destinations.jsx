@@ -84,6 +84,8 @@ export default function Destinations() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [minPrice, setMinPrice] = useState("");
+  const [priceError, setPriceError] = useState("");
+
   const [minAvailablePrice, setMinAvailablePrice] = useState(0);
 
 const [maxPrice, setMaxPrice] = useState("");
@@ -118,9 +120,12 @@ const [maxPrice, setMaxPrice] = useState("");
       }
 
       if (minPrice && parseFloat(minPrice) < minAvailablePrice) {
-        alert(`Minimum price must be at least $${minAvailablePrice}`);
+        setPriceError(`Minimum price must be at least $${minAvailablePrice}`);
         return;
+      }else{
+        setPriceError("");
       }
+      
       
       const response = await fetch(url);
       if (!response.ok) {
@@ -284,6 +289,11 @@ const [maxPrice, setMaxPrice] = useState("");
     />
   </div>
 </div>
+{priceError && (
+  <div className="alert alert-danger py-2 text-center" role="alert">
+    {priceError}
+  </div>
+)}
                 <div className="d-grid gap-2">
                   <button 
                     onClick={handleSearch}
