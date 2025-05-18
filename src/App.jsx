@@ -11,6 +11,7 @@ import Destinations from './components/Destinations/Destinations';
 import Details from './components/Destinations/Details';
 
 import AboutUs from './components/AboutUs';
+import ContactUs from './components/ContactUs';
 
 export default function App() {
   return (
@@ -22,6 +23,8 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/contact" element={<ContactUs />} />
+
         <Route path="/destinations" element={<Destinations />} />
         <Route path="/details/:id" element={<Details />} />
 
