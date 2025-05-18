@@ -1,6 +1,7 @@
 import { useState } from "react";
-import landingImage from '../assets/LandingImage.png'
+import landingImage from '../assets/_methode_times_prod_web_bin_99fb9468-4b44-406d-a4c2-5646791b6367.jpg';
 import CustomNavbar from "./Navbar";
+import Footer from "./Footer";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -84,9 +85,14 @@ export default function ContactUs() {
               </button>
             </div>
           </form>
+
         </div>
+
       </div>
+
     </div>
+    <Footer />
+
     </>
   );
 }
