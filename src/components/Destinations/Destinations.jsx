@@ -240,15 +240,13 @@ export default function Destinations() {
         ]);
       }
     } else {
-      // Use OpenRouter API for high-quality, human-like AI response (Mixtral-8x7b)
+      // Use Netlify serverless function as a proxy for OpenRouter API
       setChatMessages((msgs) => [...msgs, { sender: "bot", text: "Thinking..." }]);
       try {
-        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        const response = await fetch("/.netlify/functions/openrouter-chat", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            // Use environment variable for API key
-            "Authorization": `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             model: "mistralai/mixtral-8x7b-instruct",
