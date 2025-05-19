@@ -240,13 +240,14 @@ export default function Destinations() {
         ]);
       }
     } else {
-      // Use Netlify serverless function as a proxy for OpenRouter API
+      // Use OpenRouter API for high-quality, human-like AI response (Mixtral-8x7b) - LOCAL ONLY
       setChatMessages((msgs) => [...msgs, { sender: "bot", text: "Thinking..." }]);
       try {
-        const response = await fetch("/.netlify/functions/openrouter-chat", {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`
           },
           body: JSON.stringify({
             model: "mistralai/mixtral-8x7b-instruct",
@@ -258,6 +259,11 @@ export default function Destinations() {
             max_tokens: 120
           })
         });
+        // Debug: log status and response
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('OpenRouter API error:', response.status, errorText);
+        }
         const data = await response.json();
         let aiText = "Sorry, I couldn't think of a good answer right now.";
         if (data && data.choices && data.choices[0]?.message?.content) {
@@ -268,6 +274,7 @@ export default function Destinations() {
           { sender: "bot", text: aiText }
         ]);
       } catch (err) {
+        console.error('Chatbot fetch error:', err);
         setChatMessages((msgs) => [
           ...msgs.slice(0, -1),
           { sender: "bot", text: "Sorry, I couldn't connect to the AI service right now." }
