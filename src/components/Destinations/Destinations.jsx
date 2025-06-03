@@ -247,7 +247,8 @@ export default function Destinations() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`
+            // Use the new OpenRouter API key directly
+            "Authorization": "Bearer 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"
           },
           body: JSON.stringify({
             model: "mistralai/mixtral-8x7b-instruct",
@@ -263,6 +264,7 @@ export default function Destinations() {
         if (!response.ok) {
           const errorText = await response.text();
           console.error('OpenRouter API error:', response.status, errorText);
+          throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
         }
         const data = await response.json();
         let aiText = "Sorry, I couldn't think of a good answer right now.";
@@ -274,10 +276,13 @@ export default function Destinations() {
           { sender: "bot", text: aiText }
         ]);
       } catch (err) {
-        console.error('Chatbot fetch error:', err);
+        let errorMsg = "Sorry, I couldn't connect to the AI service right now.";
+        if (err && err.message) {
+          errorMsg += `\nError: ${err.message}`;
+        }
         setChatMessages((msgs) => [
           ...msgs.slice(0, -1),
-          { sender: "bot", text: "Sorry, I couldn't connect to the AI service right now." }
+          { sender: "bot", text: errorMsg }
         ]);
       }
     }

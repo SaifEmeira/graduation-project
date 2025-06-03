@@ -42,6 +42,37 @@ export default function Details() {
       try {
         const res = await fetch(`https://tourguide.tryasp.net/api/Tours/${id}`);
         const data = await res.json();
+        // --- Ensure sessions are in the future and distributed on 5th, 12th, 19th, 26th of each month until end of year ---
+        if (data.sessions && Array.isArray(data.sessions)) {
+          const now = new Date();
+          const sessionDays = [5, 12, 19, 26];
+          let sessionDates = [];
+          let month = now.getMonth();
+          let year = now.getFullYear();
+          let sessionsNeeded = data.sessions.length; // Use all sessions
+          // Loop through months until December of the current year
+          while (sessionDates.length < sessionsNeeded && year === now.getFullYear()) {
+            for (let d = 0; d < sessionDays.length; d++) {
+              const day = sessionDays[d];
+              const candidate = new Date(year, month, day, 10, 0, 0);
+              if (candidate > now) {
+                sessionDates.push(candidate);
+                if (sessionDates.length === sessionsNeeded) break;
+              }
+            }
+            month++;
+            if (month > 11) {
+              break; // Only until end of this year
+            }
+          }
+          data.sessions = data.sessions.slice(0, sessionsNeeded).map((session, idx) => {
+            return {
+              ...session,
+              startDate: sessionDates[idx] ? sessionDates[idx].toISOString() : session.startDate,
+              currentCapacity: session.currentCapacity || 0
+            };
+          });
+        }
         setTour(data);
       } catch (err) {
         console.error("Error fetching tour:", err);
