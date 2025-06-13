@@ -72,7 +72,10 @@ export default function LoginForm() {
         ></div>
 
         {/* Right side - Login form */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center bg-dark text-light">
+        <div className="col-md-6 d-flex align-items-center justify-content-center bg-dark text-light" 
+        
+                    style={{ background: "linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6))" }}
+        >
           <div className="w-75">
             <h1 className="text-center mb-3 fw-bold">WELCOME BACK</h1>
             <p
@@ -165,8 +168,8 @@ export default function LoginForm() {
                   {/* Login Button */}
                   <button
                     type="submit"
-                    className="btn w-100 mb-3 border-0 text-white"
-                    style={{ backgroundColor: "#AD764A" }}
+                    className="btn btn-warning w-100 mb-3 border-0 text-black"
+                    // style={{ backgroundColor: "#AD764A" }}
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Logging in..." : "Login"}
@@ -180,8 +183,8 @@ export default function LoginForm() {
               do not have an account?{" "}
               <Link
                 to="/register"
-                className="text-decoration-underline"
-                style={{ color: "#AD764A" }}
+                className="text-decoration-underline text-warning"
+                // style={{ color: "#AD764A" }}
               >
                 Sign Up
               </Link>

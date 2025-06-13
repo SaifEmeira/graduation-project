@@ -92,7 +92,8 @@ export default function Register() {
         ></div>
 
         {/* Right Side - Registration Form */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center bg-dark text-light">
+        <div className="col-md-6 d-flex align-items-center justify-content-center bg-dark text-light"   
+        style={{ background: "linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6))" }}>
           <form className="w-75" onSubmit={(e) => {
   e.preventDefault(); // Prevent default behavior
   console.log("Before submit: Formik errors:", formik.errors); // Check for errors
@@ -237,8 +238,8 @@ export default function Register() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="btn btn-warning w-100 mb-3 border-0"
-              style={{ backgroundColor: "#AD764A" }}
+              className="btn btn-warning w-100 mb-3 border-0 text-black"
+              // style={{ backgroundColor: "#AD764A" }}
             >
               Sign Up
             </button>

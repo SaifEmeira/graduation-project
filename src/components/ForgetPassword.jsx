@@ -85,7 +85,7 @@ export default function ForgetPassword() {
           ) : null}
           <button
             type="submit"
-            className="continue-button"
+            className="continue-button btn-warning text-black"
             disabled={!(formik.isValid && formik.dirty)}
           >
             Continue
